@@ -10,7 +10,7 @@ from Products.CMFCore.interfaces import IPropertiesTool
 def get_properties():
     ptool = queryUtility(IPropertiesTool)
     if ptool is not None:
-        return getattr(ptool, 'plone_hyphenator_properties', None)
+        return getattr(ptool, 'hyphenator_properties', None)
 
 def get_config():
     """Get the configuration
@@ -19,10 +19,15 @@ def get_config():
     """
     props = get_properties()
     if props is not None:
-        wordlist_url = props.getProperty('wordlist_url', '')
-        if wordlist_url:
-            # make it absolute from site root
-            pass
+        wordlist_path = props.getProperty('wordlist_path', '')
+        if wordlist_path:
+            if not wordlist_path.startswith('/'):
+                raise RuntimeError, 'wordlist_path must be an absolute path starting with /'
+            portal_url = getToolByName(props, 'portal_url')
+            portal = portal_url.getPortalObject()
+            wordlist_url = '/' + portal.absolute_url() + wordlist_path
+        else:
+            wordlist_url = ''
         config = {
             'selector': props.getProperty('selector', '#content-core'),
             'wordlist_url': wordlist_url,
