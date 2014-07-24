@@ -19,9 +19,13 @@ def get_config():
     """
     props = get_properties()
     if props is not None:
+        wordlist_url = props.getProperty('wordlist_url', '')
+        if wordlist_url:
+            # make it absolute from site root
+            pass
         config = {
             'selector': props.getProperty('selector', '#content-core'),
-            'wordlist_url': props.getProperty('wordlist_url', ''),
+            'wordlist_url': wordlist_url,
         }
     else:
         config = {

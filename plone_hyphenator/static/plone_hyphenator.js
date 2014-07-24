@@ -1,9 +1,5 @@
 +function($) {
 
-var hyphenatorSelector = $('meta[name="plone-hyphenator-selector"]').attr('content');
-
-console.log('hyphenatorSelector:', hyphenatorSelector);
-
 // get a query param from the request
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -15,11 +11,13 @@ function getParameterByName(name) {
 var controller = {
   hyphenateOptions: {
   },
-  init: function() {
+  init: function(options) {
+    this.options = options;
     this.config();
     Hyphenator.run();
   },
   config: function() {
+    var options = this.options;
     Hyphenator.config({
       // INVISIBLE SEPARATOR
       hyphenchar: String.fromCharCode(173),
@@ -27,28 +25,44 @@ var controller = {
       urlhyphenchar: '\u200b',
       minwordlength : 4,
       selectorfunction: function () {
-        return $(hyphenatorSelector).get();
+        return $(options.hyphenatorSelector).get();
       }
     });
+    // add exception wordlist
     var exceptions = [];
-    /*
-    // Let's split it to rows, filtering out blanks
-    _.each($('[name="corrections"]').val().split(/\r?\n/), function(val) {
-      if (/^\s*$/.test(val)) {
-        return;
-      }
+    for (var i=0; i < options.wordlist.length; i++) {
+      var val = options.wordlist[i];
       // Surprisingly, capitals do matter, (??) so
       // we add both lowercase and capitalized version.
       exceptions.push(val.toLowerCase());
       exceptions.push(val.charAt(0).toUpperCase() + val.slice(1).toLowerCase());
-    });
+    }
+    // XXX German language only
+    // (wordlist will be ignored to all other languages)
     Hyphenator.addExceptions('de', exceptions.join(', '));
-    */
   }
 };
 
 $(function() {
-  controller.init();
+  var hyphenatorSelector = $('meta[name="plone-hyphenator-selector"]').attr('content');
+  var wordlistUrl = $('meta[name="plone-hyphenator-wordlist-url"]').attr('content');
+  $.ajax({
+    url: wordlistUrl
+  }).then(function(data) {
+    var wordlist;
+    try {
+      wordlist = JSON.parse(data);
+    } catch (exc) {
+      console.log('JSON parse error, wordlist ignored -' + wordlist);
+      wordlist = '';
+    }
+    controller.init({
+      hyphenatorSelector: hyphenatorSelector,
+      wordlist: wordlist
+    });
+  });
+
+
 });
 
 }(jQuery);
