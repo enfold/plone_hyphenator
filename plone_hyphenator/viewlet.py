@@ -3,10 +3,32 @@
 
 from Products.CMFCore.utils import getToolByName
 from plone.app.layout.viewlets import common as base
+from zope.component import queryUtility
+from Products.CMFCore.interfaces import IPropertiesTool
 
-from .config import get_config
-from .auth import get_auth_token
 
+def get_properties():
+    ptool = queryUtility(IPropertiesTool)
+    if ptool is not None:
+        return getattr(ptool, 'plone_hyphenator_properties', None)
+
+def get_config():
+    """Get the configuration
+
+    Data comes from the plone site properties.
+    """
+    props = get_properties()
+    if props is not None:
+        config = {
+            'selector': props.getProperty('selector', '#content-core'),
+            'wordlist_url': props.getProperty('wordlist_url', ''),
+        }
+    else:
+        config = {
+            'selector': '#content-core',
+            'wordlist_url': '',
+        }
+    return config
 
 class HyphenatorViewlet(base.ViewletBase):
     """
@@ -14,6 +36,7 @@ class HyphenatorViewlet(base.ViewletBase):
 
     def update(self):
         super(HyphenatorViewlet, self).update()
+        self.config = get_config()
         # Is the product installed?
         # We need to check it, as this information is not obvious based on
         # the configuration alone.

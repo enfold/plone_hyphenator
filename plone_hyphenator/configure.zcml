@@ -21,15 +21,13 @@
         directory="static"
         />
 
-<!--
     <browser:viewlet
         name="plone_hyphenator.head"
-        class=".viewlet.FirebaseViewlet"
+        class=".viewlet.HyphenatorViewlet"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHead"
         template="templates/head.pt"
         layer="*"
         permission="zope2.View"
         />
--->
 
 </configure>

@@ -1,4 +1,6 @@
-<tal:head tal:condition="view/auth_token">
-    <script src="..."
-        type="text/javascript"></script>
+<tal:head>
+  <meta name="plone-hyphenator-selector"
+    tal:attributes="content view/config/selector">
+  <meta name="plone-hyphenator-wordlist-url"
+    tal:attributes="content view/config/wordlist_url">
 </tal:head>

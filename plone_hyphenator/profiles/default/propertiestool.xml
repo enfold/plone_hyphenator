@@ -2,6 +2,7 @@
 <object name="portal_properties" meta_type="Plone Properties Tool">
  <object name="plone_hyphenator_properties" meta_type="Plone Property Sheet">
   <property name="title">Plone Hyphenator properties</property>
-  <!--property name="XXX" type="string"></property-->
+  <property name="selector" type="string">#content-core</property>
+  <property name="wordlist_url" type="string"></property>
  </object>
 </object>

@@ -1,6 +1,8 @@
 +function($) {
 
-var hyphenateSelector = "#content-core";
+var hyphenatorSelector = $('meta[name="plone-hyphenator-selector"]').attr('content');
+
+console.log('hyphenatorSelector:', hyphenatorSelector);
 
 // get a query param from the request
 function getParameterByName(name) {
@@ -9,21 +11,6 @@ function getParameterByName(name) {
         results = regex.exec(location.search);
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
-
-/*
-// initial parameters for mode and corrections
-var initialMode = getParameterByName('mode');
-var initialCorrections = getParameterByName('corrections');
-
-// set the dom from initial values
-if (initialMode) {
- $('[name="mode"]').val(initialMode);
-}
-if (initialCorrections) {
- $('[name="corrections"]').val(initialCorrections);
-}
-*/
-
 
 var controller = {
   hyphenateOptions: {
@@ -40,7 +27,7 @@ var controller = {
       urlhyphenchar: '\u200b',
       minwordlength : 4,
       selectorfunction: function () {
-        return $(hyphenateSelector).get();
+        return $(hyphenatorSelector).get();
       }
     });
     var exceptions = [];
