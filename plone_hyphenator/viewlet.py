@@ -1,43 +1,11 @@
 
-# Copyright (c) 2014 Enfold Systems, Inc. All rights reserved.
-
 from Products.CMFCore.utils import getToolByName
 from plone.app.layout.viewlets import common as base
 from zope.component import queryUtility
 from Products.CMFCore.interfaces import IPropertiesTool
 
+from .config import get_config
 
-def get_properties():
-    ptool = queryUtility(IPropertiesTool)
-    if ptool is not None:
-        return getattr(ptool, 'hyphenator_properties', None)
-
-def get_config():
-    """Get the configuration
-
-    Data comes from the plone site properties.
-    """
-    props = get_properties()
-    if props is not None:
-        wordlist_path = props.getProperty('wordlist_path', '')
-        if wordlist_path:
-            if not wordlist_path.startswith('/'):
-                raise RuntimeError, 'wordlist_path must be an absolute path starting with /'
-            portal_url = getToolByName(props, 'portal_url')
-            portal = portal_url.getPortalObject()
-            wordlist_url = '/' + portal.absolute_url() + wordlist_path
-        else:
-            wordlist_url = ''
-        config = {
-            'selector': props.getProperty('selector', '#content-core'),
-            'wordlist_url': wordlist_url,
-        }
-    else:
-        config = {
-            'selector': '#content-core',
-            'wordlist_url': '',
-        }
-    return config
 
 class HyphenatorViewlet(base.ViewletBase):
     """

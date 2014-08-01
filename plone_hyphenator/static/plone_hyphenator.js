@@ -103,12 +103,14 @@ var data = $('html').data(),
     module = data.plone_hyphenator = data.plone_hyphenator || {};
 module.controller = controller;
 module.detectLanguage = detectLanguage;
+module.info = info;
+module.error = error;
 
 
 $(function() {
   var wordlistBaseUrl = $('meta[name="plone-hyphenator-wordlist-url"]').attr('content'),
       hyphenatorSelector = $('meta[name="plone-hyphenator-selector"]').attr('content'),
-      wordlist = '';
+      wordlist = [];
   function initHyphenator() {
     return controller.init({
       hyphenatorSelector: hyphenatorSelector,
@@ -127,7 +129,7 @@ $(function() {
         wordlist = JSON.parse(data);
       } catch (exc) {
         error('JSON parse error, wordlist ignored - ' + wordlist);
-        wordlist = '';
+        wordlist = [];
       }
       initHyphenator();
     }).fail(function(jqXHR, textStatus) {

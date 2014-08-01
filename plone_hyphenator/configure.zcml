@@ -39,4 +39,11 @@
         permission="zope2.View"
         />
 
+    <browser:page
+        for="*"
+        class=".save_wordlist.SaveWordlistView"
+        name="plone_hyphenator_save_wordlist"
+        permission="zope2.View"
+      />
+
 </configure>

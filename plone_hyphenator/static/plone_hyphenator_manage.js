@@ -21,16 +21,42 @@ var manageController = {
     });
   },
   open: function() {
-    var lang = module.detectLanguage();
-    console.log('OPEN', lang);
-    this.el.overlay().load();
+    if (! this.options.wordlistSaveUrl) {
+      module.error('Hyphenation management does not work without a wordlist.');
+    } else {
+      this.lang = this.lang || module.detectLanguage();
+      module.info('OPEN ' + this.lang);
+      var txt = module.controller.options.wordlist.join('\n');
+      this.el.find('textarea').val(txt);
+      this.el.overlay().load();
+    }
   },
   close: function() {
-    console.log('CLOSE');
+    module.info('CLOSE');
     this.el.overlay().close();
   },
   save: function() {
-    console.log('SAVE');
+    module.info('SAVE');
+    var url = this.options.wordlistSaveUrl,
+        txt = this.el.find('textarea').val(),
+        lines = txt.split(/\n/),
+        content = [];
+    for (var i = 0; i < lines.length; i++) {
+      var trimmed = lines[i].replace(/^\s+|\s+$/g,'');
+      if (trimmed) {
+        content.push();
+      }
+    }
+    var jsonContent = JSON.stringify(content);
+    module.info('Saving wordlist for language "' + this.lang + '": ' + jsonContent);
+    $.ajax({
+      url: url,
+      method: 'POST',
+      data: {
+        lang: this.lang,
+        content: jsonContent
+      }
+    });
     this.close();
   }
 };
@@ -40,7 +66,9 @@ var manageController = {
 module.manageController = manageController;
 
 $(function() {
+  var wordlistSaveUrl = $('meta[name="plone-hyphenator-wordlist-save-url"]').attr('content');
   manageController.init({
+    wordlistSaveUrl: wordlistSaveUrl
   });
 });
 
