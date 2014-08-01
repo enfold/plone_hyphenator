@@ -28,6 +28,7 @@ var manageController = {
       module.info('OPEN ' + this.lang);
       var txt = module.controller.options.wordlist.join('\n');
       this.el.find('textarea').val(txt);
+      this.el.find('.submit').removeAttr('disabled');
       this.el.overlay().load();
     }
   },
@@ -36,13 +37,18 @@ var manageController = {
     this.el.overlay().close();
   },
   save: function() {
+    var self = this;
     module.info('SAVE');
+    this.el.find('.submit').attr('disabled', 'disabled');
     var url = this.options.wordlistSaveUrl,
         txt = this.el.find('textarea').val(),
         lines = txt.split(/\n/),
         content = [];
     for (var i = 0; i < lines.length; i++) {
-      var trimmed = lines[i].replace(/^\s+|\s+$/g,'');
+      // remove all whitespace, also from the middle of the word!
+      var trimmed = lines[i].replace(/\s+/g,'');
+      // make sure there is only 1 dash
+      trimmed = trimmed.replace(/\-+/g,'-');
       if (trimmed) {
         content.push(trimmed);
       }
@@ -56,8 +62,15 @@ var manageController = {
         lang: this.lang,
         content: jsonContent
       }
+    }).done(function(data) {
+      self.close();
+      // XXX XXX re-hyphenate everything, or reload?
+    }).fail(function(jqXHR, textStatus) {
+      alert('Saving corrections have failed. [' + textStatus + ']');
+      self.close();
     });
-    this.close();
+    // Also save the wordlist locally.
+    module.controller.options.wordlist = content;
   }
 };
 

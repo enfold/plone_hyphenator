@@ -1,8 +1,6 @@
 
 from Products.CMFCore.utils import getToolByName
 from plone.app.layout.viewlets import common as base
-from zope.component import queryUtility
-from Products.CMFCore.interfaces import IPropertiesTool
 
 from .config import get_config
 
