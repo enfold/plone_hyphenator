@@ -1,0 +1,24 @@
+
+/* styles for plone hyphenator manager UI */
+
+.plone-hyphenator-overlay-content {
+    padding: 1em;
+    background-color: #FFFFFF;
+    border: 1px solid #999999;
+    box-shadow: 0 0 3em 0.5em #666666;
+    white-space: normal;
+    overflow-y: auto;
+}
+
+.plone-hyphenator-overlay-content select {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.plone-hyphenator-overlay-content textarea {
+  height: 20em;
+}
+
+.plone-hyphenator-overlay-content .submit {
+  margin-top: 1em;
+}

@@ -3,4 +3,7 @@
     <order manager="plone.htmlhead" skinname="*">
         <viewlet name="plone_hyphenator.head" insert-before="*"/>
     </order>
+    <order manager="plone.portalheader" skinname="*">
+        <viewlet name="plone_hyphenator.manager" insert-before="*"/>
+    </order>
 </object>

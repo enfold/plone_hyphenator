@@ -1,0 +1,25 @@
+<div id="plone-hyphenator-overlay" class="overlay overlay-ajax">
+  <div class="close"></div>
+  <div class="plone-hyphenator-overlay-content">
+    <h1>Correction list for hyphenation</h1>
+    <p>
+      These words serve as exceptions. Once entered, they are only
+      hyphenated at the specified hyphenation points.
+      Each word should be on a separate line.
+    </p>
+    <label for="lang">Current language:</label>
+    <select name="lang">
+      <option value="en">English</option>
+      <option value="de">German</option>
+    </select>
+    <form>
+      <textarea
+        placeholder="Enter corrections, one word example per line..."></textarea>
+        <input type="submit" class="submit" value="Save">
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+  // Add me to the end of the body. Fixes z-index issue.
+  jQuery('#plone-hyphenator-overlay').appendTo('body');
+</script>

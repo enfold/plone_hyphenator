@@ -30,4 +30,13 @@
         permission="zope2.View"
         />
 
+    <browser:viewlet
+        name="plone_hyphenator.manager"
+        class=".viewlet.HyphenatorViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+        template="templates/manage.pt"
+        layer="*"
+        permission="zope2.View"
+        />
+
 </configure>
