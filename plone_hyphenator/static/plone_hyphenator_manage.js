@@ -44,7 +44,7 @@ var manageController = {
     for (var i = 0; i < lines.length; i++) {
       var trimmed = lines[i].replace(/^\s+|\s+$/g,'');
       if (trimmed) {
-        content.push();
+        content.push(trimmed);
       }
     }
     var jsonContent = JSON.stringify(content);

@@ -30,12 +30,14 @@ def get_config():
             wordlist_save_url = ''
         config = {
             'selector': props.getProperty('selector', '#content-core'),
+            'wordlist_path': wordlist_path,
             'wordlist_url': wordlist_url,
             'wordlist_save_url': wordlist_save_url
         }
     else:
         config = {
             'selector': '#content-core',
+            'wordlist_path': '',
             'wordlist_url': '',
             'wordlist_save_url': '',
         }
