@@ -38,15 +38,9 @@ function splitName(name) {
   };
 }
 
-var controller = {
-  hyphenateOptions: {
-  },
-  init: function(options) {
-    this.options = options;
-    this.config();
-    Hyphenator.run();
-  },
-  detectLanguage: function() {
+function detectLanguage() {
+  var lang = $('html')[0].lang;
+  if (! lang) {
     // Dry run, just to detect languages.
     // Normally, one would call the corresponding function, but Hyphenator
     // hides these in a closure. So we run the whole shebang but with a
@@ -59,10 +53,22 @@ var controller = {
     // After the hyphenator has detected the current language,
     // it sets it as 'lang' attribute on the html. We will
     // need to use this to fetch our exception list for that language.
-    var lang = $('html')[0].lang;
-    // info('LANG: ' + lang);
-    this.lang = lang;
-    return lang;
+    lang = $('html')[0].lang;
+  }
+  return lang;
+}
+
+var controller = {
+  hyphenateOptions: {
+  },
+  init: function(options) {
+    this.options = options;
+    this.config();
+    Hyphenator.run();
+  },
+  detectLanguage: function() {
+    this.lang = detectLanguage();
+    return this.lang;
   },
   config: function() {
     var options = this.options;
@@ -92,43 +98,47 @@ var controller = {
   }
 };
 
+// export module
+var data = $('html').data(),
+    module = data.plone_hyphenator = data.plone_hyphenator || {};
+module.controller = controller;
+module.detectLanguage = detectLanguage;
+
 
 $(function() {
-  var hyphenatorSelector = $('meta[name="plone-hyphenator-selector"]').attr('content');
-  var wordlistBaseUrl = $('meta[name="plone-hyphenator-wordlist-url"]').attr('content');
+  var wordlistBaseUrl = $('meta[name="plone-hyphenator-wordlist-url"]').attr('content'),
+      hyphenatorSelector = $('meta[name="plone-hyphenator-selector"]').attr('content'),
+      wordlist = '';
+  function initHyphenator() {
+    return controller.init({
+      hyphenatorSelector: hyphenatorSelector,
+      wordlist: wordlist
+    });
+  }
   if (wordlistBaseUrl) {
     // detect language. If xxxx.json was given, the url will be xxxxx_en.json, xxxx_de.json.
-    var lang = controller.detectLanguage();
-    var split = splitName(wordlistBaseUrl);
-    var wordlistUrl = split.base + '_' + lang.toLowerCase() + split.ext;
+    var lang = detectLanguage(),
+        split = splitName(wordlistBaseUrl),
+        wordlistUrl = split.base + '_' + lang.toLowerCase() + split.ext;
     $.ajax({
       url: wordlistUrl
     }).done(function(data) {
-      var wordlist;
       try {
         wordlist = JSON.parse(data);
       } catch (exc) {
         error('JSON parse error, wordlist ignored - ' + wordlist);
         wordlist = '';
       }
-      controller.init({
-        hyphenatorSelector: hyphenatorSelector,
-        wordlist: wordlist
-      });
+      initHyphenator();
     }).fail(function(jqXHR, textStatus) {
       error('Wordlist file could not be read, wordlist ignored [' + textStatus + ']');
       // no wordlist
-      controller.init({
-        hyphenatorSelector: hyphenatorSelector,
-      });
+      initHyphenator();
     });
   } else {
     // no wordlist
-    controller.init({
-      hyphenatorSelector: hyphenatorSelector,
-    });
+    initHyphenator();
   }
-
 });
 
 }(jQuery);

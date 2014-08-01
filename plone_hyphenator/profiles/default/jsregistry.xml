@@ -2,5 +2,7 @@
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
     <javascript id="++resource++plone_hyphenator/vendor/hyphenator/Hyphenator.js" />
     <javascript id="++resource++plone_hyphenator/vendor/hyphenator/patterns/de.js" />
+    <javascript id="++resource++plone_hyphenator/vendor/hyphenator/patterns/en-us.js" />
     <javascript id="++resource++plone_hyphenator/plone_hyphenator.js" />
+    <javascript id="++resource++plone_hyphenator/plone_hyphenator_manage.js" />
 </object>
