@@ -34,7 +34,8 @@ def save_wordlist(context, request):
             folder = portal
             name = split_path[0]
         try:
-            file_content = folder[name] = File(name, '', '[]', 'application/json', '')
+            # (This mime type will make the content editable through ZMI. Can be changed later as desired.)
+            file_content = folder[name] = File(name, '', '[]', 'text/x-unknown-content-type', '')
         except Unauthorized:
             raise RuntimeError, 'Cannot save wordlist, no permission to create object in folder [%s]' % (path, )
     # No need to clean the list, as the client has done it already.
