@@ -61,9 +61,9 @@ function detectLanguage() {
 function fetchWordList(o) {
   var deferred = $.Deferred();
   if (o.wordListBaseUrl) {
-    // detect language. If xxxx.json was given, the url will be xxxxx_en.json, xxxx_de.json.
-    var split = splitName(o.wordListBaseUrl),
-        wordListUrl = split.base + '_' + o.lang.toLowerCase() + split.ext;
+    // detect language. LANG will be replaced by the current language.
+    var wordListUrl = o.wordListBaseUrl.replace(/LANG/g, o.lang.toLowerCase());
+    // info('wordListUrl: ' + wordListUrl);
     $.ajax({
       url: wordListUrl,
       // always parse json response. Regardless of mime type which may be set incorrectly.

@@ -1,5 +1,6 @@
 
 import json
+import re
 from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
 from zExceptions import Unauthorized
@@ -13,17 +14,18 @@ def save_wordlist(context, request):
     lang = request.form.get('lang')
     content_json = request.form.get('content')
     wordlist_path = config['wordlist_path']
+    # replace LANG with the current language.
+    wordlist_path = re.sub(r'LANG', lang.lower(), wordlist_path)
     # must remove leading /, it breaks traversal. In any
     # case, we traverse from the portal root.
     assert wordlist_path.startswith('/')
-    basename, ext = splitext(wordlist_path[1:])
-    path = '%s_%s%s' % (basename, lang, ext)
+    wordlist_path = wordlist_path[1:]
     portal_url = getToolByName(context, 'portal_url')
     portal = portal_url.getPortalObject()
     try:
-        file_content = portal.unrestrictedTraverse(path)
+        file_content = portal.unrestrictedTraverse(wordlist_path)
     except KeyError:
-        split_path = path.rsplit('/', 1)
+        split_path = wordlist_path.rsplit('/', 1)
         if len(split_path) > 1:
             folder_path, name = split_path
             try:
