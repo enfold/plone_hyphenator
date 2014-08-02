@@ -42,7 +42,6 @@ var manageController = {
     if (! this.options.wordListSaveUrl) {
       module.error('Hyphenation management does not work without a wordlist.');
     } else {
-      // module.info('OPEN ' + this.lang);
       // take the initial wordlist from the controller.
       this.setWordList(module.controller.options.wordList);
       this.el.find('.submit').removeAttr('disabled');
@@ -50,7 +49,7 @@ var manageController = {
     }
   },
   close: function() {
-    // module.info('CLOSE');
+
     this.el.overlay().close();
   },
   selectLanguage: function(lang) {
@@ -65,7 +64,6 @@ var manageController = {
         wordListBaseUrl: this.options.wordListBaseUrl,
         lang: lang
       }).then(function(wordList) {
-        console.log('SELECTED', lang, wordList);
         self.el.find('.submit').removeAttr('disabled');
         self.el.find('textarea').removeAttr('disabled');
         // Update ourselves. Never update the hyphenation at this point.
@@ -79,39 +77,40 @@ var manageController = {
   },
   save: function() {
     var self = this;
-    // module.info('SAVE');
     this.el.find('.submit').attr('disabled', 'disabled');
     var url = this.options.wordListSaveUrl,
         txt = this.el.find('textarea').val(),
         lines = txt.split(/\n/),
-        content = [];
+        wordList = [];
     for (var i = 0; i < lines.length; i++) {
       // remove all whitespace, also from the middle of the word!
       var trimmed = lines[i].replace(/\s+/g,'');
       // make sure there is only 1 dash
       trimmed = trimmed.replace(/\-+/g,'-');
       if (trimmed) {
-        content.push(trimmed);
+        wordList.push(trimmed);
       }
     }
-    var jsonContent = JSON.stringify(content);
-    // module.info('Saving wordlist for language "' + this.lang + '": ' + jsonContent);
     $.ajax({
       url: url,
       method: 'POST',
       data: {
         lang: this.lang,
-        content: jsonContent
+        content: JSON.stringify(wordList)
       }
     }).done(function(data) {
       self.close();
-      // XXX XXX re-hyphenate everything, or reload?
+      // update the current controller with the new word list
+      // only if this is our current language.
+      if (self.lang == module.detectLanguage()) {
+        module.controller.update({
+          wordList: wordList,
+        });
+      }
     }).fail(function(jqXHR, textStatus) {
       alert('Saving corrections have failed. [' + textStatus + ']');
       self.close();
     });
-    // Also save the wordlist locally.
-    module.controller.options.wordList = content;
   }
 };
 

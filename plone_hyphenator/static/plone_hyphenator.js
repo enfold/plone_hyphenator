@@ -91,14 +91,8 @@ var controller = {
     Hyphenator.run();
   },
   update: function(options) {
-    info('UPDATE!', options);
-    $.extend(this.options, options);
-    this.config();
-    Hyphenator.run();
-  },
-  detectLanguage: function() {
-    this.lang = detectLanguage();
-    return this.lang;
+    // Reconfig and re-run does not seem to work. Reload.
+    window.location.reload();
   },
   config: function() {
     var options = this.options;
@@ -123,7 +117,10 @@ var controller = {
         exceptions.push(val.charAt(0).toUpperCase() + val.slice(1).toLowerCase());
       }
       // add wordlist for current language
-      Hyphenator.addExceptions(this.lang, exceptions.join(', '));
+      // Note that Hyphenator does not allow _deleting_ the existing list and always appends to it.
+      // which is why we cannot update this on the fly.
+      var lang = detectLanguage();
+      Hyphenator.addExceptions(lang, exceptions.join(', '));
     }
   }
 };
