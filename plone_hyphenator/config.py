@@ -41,4 +41,10 @@ def get_config():
             'wordlist_url': '',
             'wordlist_save_url': '',
         }
+    # Further properties are provided from here as constants. They can
+    # be modified from here.
+    config['languages'] = (
+        ('en', 'English'),
+        ('de', 'Deutsch'),
+    )
     return config

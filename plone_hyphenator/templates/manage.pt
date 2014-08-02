@@ -9,8 +9,11 @@
     </p>
     <label for="lang">Select language:</label>
     <select name="lang">
-      <option value="en">English</option>
-      <option value="de">German</option>
+      <option
+         tal:repeat="language view/config/languages"
+         tal:attributes="value python:language[0]"
+         tal:content="python:language[1]">
+      </option>
     </select>
     <form>
       <textarea
