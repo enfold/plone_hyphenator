@@ -123,14 +123,11 @@ $(function() {
         split = splitName(wordlistBaseUrl),
         wordlistUrl = split.base + '_' + lang.toLowerCase() + split.ext;
     $.ajax({
-      url: wordlistUrl
+      url: wordlistUrl,
+      // always parse json response. Regardless of mime type which may be set incorrectly.
+      dataType: 'json'
     }).done(function(data) {
-      try {
-        wordlist = JSON.parse(data);
-      } catch (exc) {
-        error('JSON parse error, wordlist ignored - ' + wordlist);
-        wordlist = [];
-      }
+      wordlist = data;
       initHyphenator();
     }).fail(function(jqXHR, textStatus) {
       error('Wordlist file could not be read, wordlist ignored [' + textStatus + ']');
