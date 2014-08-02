@@ -58,11 +58,41 @@ function detectLanguage() {
   return lang;
 }
 
+function fetchWordList(o) {
+  var deferred = $.Deferred();
+  if (o.wordListBaseUrl) {
+    // detect language. If xxxx.json was given, the url will be xxxxx_en.json, xxxx_de.json.
+    var split = splitName(o.wordListBaseUrl),
+        wordListUrl = split.base + '_' + o.lang.toLowerCase() + split.ext;
+    $.ajax({
+      url: wordListUrl,
+      // always parse json response. Regardless of mime type which may be set incorrectly.
+      dataType: 'json'
+    }).done(function(data) {
+      deferred.resolve(data);
+    }).fail(function(jqXHR, textStatus) {
+      error('Wordlist file could not be read, wordlist ignored [' + textStatus + ']');
+      // no wordlist
+      deferred.resolve([]);
+    });
+  } else {
+    // no wordlist
+    deferred.resolve([]);
+  }
+  return deferred;
+}
+
 var controller = {
   hyphenateOptions: {
   },
   init: function(options) {
     this.options = options;
+    this.config();
+    Hyphenator.run();
+  },
+  update: function(options) {
+    info('UPDATE!', options);
+    $.extend(this.options, options);
     this.config();
     Hyphenator.run();
   },
@@ -84,9 +114,9 @@ var controller = {
     });
     // add exception wordlist
     var exceptions = [];
-    if (options.wordlist) {
-      for (var i=0; i < options.wordlist.length; i++) {
-        var val = options.wordlist[i];
+    if (options.wordList) {
+      for (var i=0; i < options.wordList.length; i++) {
+        var val = options.wordList[i];
         // Surprisingly, capitals do matter, (??) so
         // we add both lowercase and capitalized version.
         exceptions.push(val.toLowerCase());
@@ -103,41 +133,21 @@ var data = $('html').data(),
     module = data.plone_hyphenator = data.plone_hyphenator || {};
 module.controller = controller;
 module.detectLanguage = detectLanguage;
+module.fetchWordList = fetchWordList;
 module.info = info;
 module.error = error;
 
 
 $(function() {
-  var wordlistBaseUrl = $('meta[name="plone-hyphenator-wordlist-url"]').attr('content'),
-      hyphenatorSelector = $('meta[name="plone-hyphenator-selector"]').attr('content'),
-      wordlist = [];
-  function initHyphenator() {
-    return controller.init({
-      hyphenatorSelector: hyphenatorSelector,
-      wordlist: wordlist
+  fetchWordList({
+    wordListBaseUrl: $('meta[name="plone-hyphenator-wordlist-url"]').attr('content'),
+    lang: detectLanguage()
+  }).then(function(wordList) {
+    controller.init({
+      hyphenatorSelector: $('meta[name="plone-hyphenator-selector"]').attr('content'),
+      wordList: wordList
     });
-  }
-  if (wordlistBaseUrl) {
-    // detect language. If xxxx.json was given, the url will be xxxxx_en.json, xxxx_de.json.
-    var lang = detectLanguage(),
-        split = splitName(wordlistBaseUrl),
-        wordlistUrl = split.base + '_' + lang.toLowerCase() + split.ext;
-    $.ajax({
-      url: wordlistUrl,
-      // always parse json response. Regardless of mime type which may be set incorrectly.
-      dataType: 'json'
-    }).done(function(data) {
-      wordlist = data;
-      initHyphenator();
-    }).fail(function(jqXHR, textStatus) {
-      error('Wordlist file could not be read, wordlist ignored [' + textStatus + ']');
-      // no wordlist
-      initHyphenator();
-    });
-  } else {
-    // no wordlist
-    initHyphenator();
-  }
+  });
 });
 
 }(jQuery);

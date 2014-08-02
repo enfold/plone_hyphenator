@@ -7,7 +7,7 @@
       hyphenated at the specified hyphenation points.
       Each word should be on a separate line.
     </p>
-    <label for="lang">Current language:</label>
+    <label for="lang">Select language:</label>
     <select name="lang">
       <option value="en">English</option>
       <option value="de">German</option>
