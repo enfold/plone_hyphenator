@@ -41,10 +41,23 @@ def get_config():
             'wordlist_url': '',
             'wordlist_save_url': '',
         }
+
+    # --
+    # Service switches
+    #
     # Further properties are provided from here as constants. They can
     # be modified from here.
+    # --
+
+    # languages displayed in the language menu of the overlay
     config['languages'] = (
         ('en', 'English'),
         ('de', 'Deutsch'),
     )
+    # Disable switch for individual languages
+    config['disable_languages'] = []
+    # config['disable_languages'] = ['de']
+    config['disable_all_languages'] = False
+    # config['disable_all_languages'] = True
+
     return config

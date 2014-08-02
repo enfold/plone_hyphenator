@@ -54,7 +54,11 @@ var manageController = {
   },
   selectLanguage: function(lang) {
     var self = this;
-    if (lang != this.lang) {
+    if (this.lang === undefined) {
+      // skip for the first time (undefined), because the controller has
+      // already fetched the list and we do not want to double fetch.
+      this.lang = lang;
+    } else if (lang != this.lang) {
       this.lang = lang;
       this.el.find('select').val(lang);
       // fetch the list for the new language
@@ -103,6 +107,8 @@ var manageController = {
       // update the current controller with the new word list
       // only if this is our current language.
       if (self.lang == module.detectLanguage()) {
+        // XXX Actually, it won't update but reload the page,
+        // as the upstream code does not support this elementary use case.
         module.controller.update({
           wordList: wordList,
         });
@@ -119,9 +125,10 @@ var manageController = {
 module.manageController = manageController;
 
 $(function() {
+  var config = JSON.parse($('meta[name="plone-hyphenator-config"]').attr('content'));
   manageController.init({
-    wordListBaseUrl: $('meta[name="plone-hyphenator-wordlist-url"]').attr('content'),
-    wordListSaveUrl: $('meta[name="plone-hyphenator-wordlist-save-url"]').attr('content')
+    wordListBaseUrl: config.wordlist_url,
+    wordListSaveUrl: config.wordlist_save_url
   });
 });
 

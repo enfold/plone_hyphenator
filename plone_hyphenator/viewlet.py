@@ -1,4 +1,5 @@
 
+import json
 from Products.CMFCore.utils import getToolByName
 from plone.app.layout.viewlets import common as base
 
@@ -12,6 +13,7 @@ class HyphenatorViewlet(base.ViewletBase):
     def update(self):
         super(HyphenatorViewlet, self).update()
         self.config = get_config()
+        self.config_json = json.dumps(self.config);
         # Is the product installed?
         # We need to check it, as this information is not obvious based on
         # the configuration alone.

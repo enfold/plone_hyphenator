@@ -91,36 +91,43 @@ var controller = {
     Hyphenator.run();
   },
   update: function(options) {
-    // Reconfig and re-run does not seem to work. Reload.
-    window.location.reload();
+    $.extend(this.options, options);
+    // Do not act if this language is disabled.
+    if (this.options.enabled) {
+      // Reconfig and re-run does not seem to work. Reload.
+      window.location.reload();
+    }
   },
   config: function() {
     var options = this.options;
-    Hyphenator.config({
-      // INVISIBLE SEPARATOR
-      hyphenchar: String.fromCharCode(173),
-      // ZERO WIDTH SPACE
-      urlhyphenchar: '\u200b',
-      minwordlength : 4,
-      selectorfunction: function () {
-        return $(options.hyphenatorSelector).get();
+    // Do not act if this language is disabled.
+    if (options.enabled) {
+      Hyphenator.config({
+        // INVISIBLE SEPARATOR
+        hyphenchar: String.fromCharCode(173),
+        // ZERO WIDTH SPACE
+        urlhyphenchar: '\u200b',
+        minwordlength : 4,
+        selectorfunction: function () {
+          return $(options.hyphenatorSelector).get();
+        }
+      });
+      // add exception wordlist
+      var exceptions = [];
+      if (options.wordList) {
+        for (var i=0; i < options.wordList.length; i++) {
+          var val = options.wordList[i];
+          // Surprisingly, capitals do matter, (??) so
+          // we add both lowercase and capitalized version.
+          exceptions.push(val.toLowerCase());
+          exceptions.push(val.charAt(0).toUpperCase() + val.slice(1).toLowerCase());
+        }
+        // add wordlist for current language
+        // Note that Hyphenator does not allow _deleting_ the existing list and always appends to it.
+        // which is why we cannot update this on the fly.
+        var lang = detectLanguage();
+        Hyphenator.addExceptions(lang, exceptions.join(', '));
       }
-    });
-    // add exception wordlist
-    var exceptions = [];
-    if (options.wordList) {
-      for (var i=0; i < options.wordList.length; i++) {
-        var val = options.wordList[i];
-        // Surprisingly, capitals do matter, (??) so
-        // we add both lowercase and capitalized version.
-        exceptions.push(val.toLowerCase());
-        exceptions.push(val.charAt(0).toUpperCase() + val.slice(1).toLowerCase());
-      }
-      // add wordlist for current language
-      // Note that Hyphenator does not allow _deleting_ the existing list and always appends to it.
-      // which is why we cannot update this on the fly.
-      var lang = detectLanguage();
-      Hyphenator.addExceptions(lang, exceptions.join(', '));
     }
   }
 };
@@ -136,13 +143,16 @@ module.error = error;
 
 
 $(function() {
+  var config = JSON.parse($('meta[name="plone-hyphenator-config"]').attr('content'));
+  var lang = detectLanguage();
   fetchWordList({
-    wordListBaseUrl: $('meta[name="plone-hyphenator-wordlist-url"]').attr('content'),
-    lang: detectLanguage()
+    wordListBaseUrl: config.wordlist_url,
+    lang: lang
   }).then(function(wordList) {
     controller.init({
-      hyphenatorSelector: $('meta[name="plone-hyphenator-selector"]').attr('content'),
-      wordList: wordList
+      hyphenatorSelector: config.selector,
+      wordList: wordList,
+      enabled: !(config.disable_all_languages || config.disable_languages.indexOf(lang) != -1)
     });
   });
 });

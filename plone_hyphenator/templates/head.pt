@@ -1,8 +1,4 @@
 <tal:head>
-  <meta name="plone-hyphenator-selector"
-    tal:attributes="content view/config/selector">
-  <meta name="plone-hyphenator-wordlist-url"
-    tal:attributes="content view/config/wordlist_url">
-  <meta name="plone-hyphenator-wordlist-save-url"
-    tal:attributes="content view/config/wordlist_save_url">
+  <meta name="plone-hyphenator-config"
+    tal:attributes="content view/config_json">
 </tal:head>
