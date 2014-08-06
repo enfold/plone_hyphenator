@@ -9,13 +9,6 @@ def get_properties():
     if ptool is not None:
         return getattr(ptool, 'hyphenator_properties', None)
 
-def abs_url(portal_url, path):
-    url = portal_url + path
-    # observed to be bad on localhost, lacking protocol, domain and leading.
-    if not url.startswith('http://') and not url.startswith('http://') and url.startswith('/'):
-        url = '/' + url
-    return url
-
 def get_config():
     """Get the configuration
 
@@ -28,9 +21,9 @@ def get_config():
         if wordlist_path:
             if not wordlist_path.startswith('/'):
                 raise RuntimeError, 'wordlist_path must be an absolute path starting with /'
-            wordlist_url = abs_url(portal_url(), wordlist_path)
+            wordlist_url = portal_url() + wordlist_path
             wordlist_save_path = '/plone_hyphenator_save_wordlist'
-            wordlist_save_url = abs_url(portal_url(), wordlist_save_path)
+            wordlist_save_url = portal_url() + wordlist_save_path
         else:
             wordlist_url = ''
             wordlist_save_url = ''
