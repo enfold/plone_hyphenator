@@ -36,6 +36,8 @@ var manageController = {
         .attr('value', lang)
         .appendTo(el.find('select'));
     }
+    // also select it
+    this.el.find('select').val(lang);
     this.selectLanguage(lang);
   },
   open: function() {
@@ -49,7 +51,6 @@ var manageController = {
     }
   },
   close: function() {
-
     this.el.overlay().close();
   },
   selectLanguage: function(lang) {
