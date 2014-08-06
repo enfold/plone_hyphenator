@@ -12,7 +12,7 @@ class HyphenatorViewlet(base.ViewletBase):
 
     def update(self):
         super(HyphenatorViewlet, self).update()
-        self.config = get_config()
+        self.config = get_config(self.context)
         self.config_json = json.dumps(self.config);
         # Is the product installed?
         # We need to check it, as this information is not obvious based on

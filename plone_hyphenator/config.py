@@ -9,14 +9,14 @@ def get_properties():
     if ptool is not None:
         return getattr(ptool, 'hyphenator_properties', None)
 
-def get_config():
+def get_config(context):
     """Get the configuration
 
     Data comes from the plone site properties.
     """
     props = get_properties()
     if props is not None:
-        portal_url = getToolByName(props, 'portal_url')
+        portal_url = getToolByName(context, 'portal_url')
         wordlist_path = props.getProperty('wordlist_path', '')
         if wordlist_path:
             if not wordlist_path.startswith('/'):

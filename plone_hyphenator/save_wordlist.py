@@ -10,7 +10,7 @@ from .config import get_config
 from os.path import splitext
 
 def save_wordlist(context, request):
-    config = get_config()
+    config = get_config(context)
     lang = request.form.get('lang')
     content_json = request.form.get('content')
     wordlist_path = config['wordlist_path']
