@@ -97,7 +97,7 @@ var manageController = {
     }
     $.ajax({
       url: url,
-      method: 'POST',
+      type: 'POST',
       data: {
         lang: this.lang,
         content: JSON.stringify(wordList)
