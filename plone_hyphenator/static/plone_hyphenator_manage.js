@@ -43,7 +43,7 @@ var manageController = {
       module.error('Hyphenation management does not work without a wordlist.');
     } else {
       // take the initial wordlist from the controller.
-      this.setWordList(module.controller.options.wordList);
+      this.setWordList(module.controller.options.wordList || []);
       this.el.find('.submit').removeAttr('disabled');
       this.el.overlay().load();
     }
