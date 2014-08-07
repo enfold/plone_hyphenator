@@ -39,8 +39,19 @@ function splitName(name) {
 }
 
 function detectLanguage() {
-  var lang = $('html')[0].lang;
+  var html = $('html');
+  var lang = html[0].lang;
   if (! lang) {
+    // is there a 'lang' attribute?
+    // let's make sure there is one...
+    var langAttr = html.attr('lang') || html.attr('xml:lang');
+    if (! langAttr) {
+      // set a fallback language, otherwise Hyphenator will blow up
+      // this case helps with admin pages or any page which have no language set.
+      // (Alternately, we could handle this case as 'no language, no hyphenation',
+      // but the current implementation which provides the fallback, is the simplest.)
+      html.attr('lang', 'en');
+    }
     // Dry run, just to detect languages.
     // Normally, one would call the corresponding function, but Hyphenator
     // hides these in a closure. So we run the whole shebang but with a
