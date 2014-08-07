@@ -26,9 +26,9 @@ default to `#content-core` so I could test it. You want to change this to a sele
 (or, whatever regions you want to hyphenate).
 
 `wordlist_path`: if specified, it must be an absolute path within the portal. This must map to a Zope File
-in the database. This can be created from the ZMI. The string LANG is replaced by the actual language.
+in the database. This can be created from the ZMI. The string {{LANG}} is replaced by the actual language.
 
-Example: If this is set to `/LANG/hyphen.json`, it will use `/en/hyphen.json` `/de/hyphen.json` for
+Example: If this is set to `/{{LANG}}/hyphen.json`, it will use `/en/hyphen.json` `/de/hyphen.json` for
 English and German hyphenation word list.
 
 The content of this file must be valid JSON:
