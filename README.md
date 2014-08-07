@@ -26,10 +26,14 @@ default to `#content-core` so I could test it. You want to change this to a sele
 (or, whatever regions you want to hyphenate).
 
 `wordlist_path`: if specified, it must be an absolute path within the portal. This must map to a Zope File
-in the database. This can be created from the ZMI. The string {{LANG}} is replaced by the actual language.
+in the database. This can be created from the ZMI. The string `{{LANG}}` is replaced by the actual language.
 
 Example: If this is set to `/{{LANG}}/hyphen.json`, it will use `/en/hyphen.json` `/de/hyphen.json` for
 English and German hyphenation word list.
+
+Example 2: If this is set to `/hyphens/wordlist_{{LANG}}.json`, it will use `/hyphens/wordlist_en.json`
+and `/hyphens/wordlist_de.json` for
+English and German.
 
 The content of this file must be valid JSON:
 ```
@@ -49,5 +53,11 @@ without dashes will never by hyphenated.)
 By pressing Save, the updated list will be saved out to the wordlist file. The page will be reloaded
 with the updated hyphenation (in case we modified the list for the current language).
 
-It is also possible to modify hyphenation exceptions for other language by selecting then
+It is also possible to modify hyphenation exceptions for other language than the language of the
+current page, by selecting then
 via the language selector.
+
+The permissions needed for the Hyphenations menu item and for saving the exception word list
+is `Modify portal content`. This permission
+is granted to all Editors who are all able to open and operate the UI. If you want different permissions,
+you can override the rules that are in `configure.zcml`.
