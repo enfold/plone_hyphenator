@@ -14,8 +14,8 @@ def save_wordlist(context, request):
     lang = request.form.get('lang')
     content_json = request.form.get('content')
     wordlist_path = config['wordlist_path']
-    # replace LANG with the current language.
-    wordlist_path = re.sub(r'LANG', lang.lower(), wordlist_path)
+    # replace {{LANG}} with the current language.
+    wordlist_path = re.sub(r'{{LANG}}', lang.lower(), wordlist_path)
     # must remove leading /, it breaks traversal. In any
     # case, we traverse from the portal root.
     assert wordlist_path.startswith('/')

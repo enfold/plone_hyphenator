@@ -61,8 +61,8 @@ function detectLanguage() {
 function fetchWordList(o) {
   var deferred = $.Deferred();
   if (o.wordListBaseUrl) {
-    // detect language. LANG will be replaced by the current language.
-    var wordListUrl = o.wordListBaseUrl.replace(/LANG/g, o.lang.toLowerCase());
+    // detect language. {{LANG}} will be replaced by the current language.
+    var wordListUrl = o.wordListBaseUrl.replace(/{{LANG}}/g, o.lang.toLowerCase());
     // info('wordListUrl: ' + wordListUrl);
     $.ajax({
       url: wordListUrl,
