@@ -50,7 +50,9 @@ def get_config(context):
 
     # languages displayed in the language menu of the overlay
     config['languages'] = (
-        ('en', 'English'),
+        ('en', 'English (Universal)'),
+        ('en-gb', 'English (British)'),
+        ('en-us', 'English (American)'),
         ('de', 'Deutsch'),
     )
     # Disable switch for individual languages
