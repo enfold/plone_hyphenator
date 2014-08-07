@@ -43,7 +43,7 @@
         for="*"
         class=".save_wordlist.SaveWordlistView"
         name="plone_hyphenator_save_wordlist"
-        permission="zope2.View"
+        permission="cmf.ModifyPortalContent"
       />
 
 </configure>

@@ -12,7 +12,7 @@
    <property name="url_expr">string:javascript:$$("html").data().plone_hyphenator.manageController.open();</property>
    <property name="icon_expr"></property>
    <property name="permissions">
-    <element value="View"/>
+    <element value="Modify portal content"/>
    </property>
    <property name="visible">True</property>
   </object>
