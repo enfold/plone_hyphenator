@@ -119,6 +119,8 @@ var controller = {
         // ZERO WIDTH SPACE
         urlhyphenchar: '\u200b',
         minwordlength : 4,
+        // Specify a fallback language in any case
+        defaultLanguage: detectLanguage(),
         selectorfunction: function () {
           return $(options.hyphenatorSelector).get();
         }
