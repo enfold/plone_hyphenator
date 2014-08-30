@@ -4,5 +4,9 @@
   <property name="title">Hyphenator properties</property>
   <property name="selector" type="string">#content-core</property>
   <property name="wordlist_path" type="string">/{{LANG}}/hyphen.json</property>
+  <property name="minwordlength_en" type="int">4</property>
+  <property name="minwordlength_en_gb" type="int">4</property>
+  <property name="minwordlength_en_us" type="int">4</property>
+  <property name="minwordlength_de" type="int">4</property>
  </object>
 </object>

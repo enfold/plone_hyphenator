@@ -11,8 +11,8 @@
     <select name="lang">
       <option
          tal:repeat="language view/config/languages"
-         tal:attributes="value python:language[0]"
-         tal:content="python:language[1]">
+         tal:attributes="value language/name"
+         tal:content="language/title">
       </option>
     </select>
     <form>

@@ -40,6 +40,12 @@ The content of this file must be valid JSON:
     ["hyphen-this-only-like-this", "neverhyphenthisone"]
 ```
 
+`mincharlength_LANG`: Minimum character length of words to hyphenate. This is specified for each language.
+If the language code contains a dash (like, `en-us`), the dash needs to be converted to underscore
+(like, `mincharlength_en_us`). If a property is not found for a given language, `4` will be used as
+a default minimum length.
+
+
 ## UI for managing hyphenations ##
 
 From the site actions, clicking on the 'Hyphenations' menu item, will bring up a popup. This will
