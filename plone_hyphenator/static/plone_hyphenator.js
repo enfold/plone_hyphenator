@@ -115,7 +115,6 @@
     },
     config: function() {
       var options = this.options;
-      console.log("options", options);
       // Do not act if this language is disabled.
       if (options.enabled) {
         Hyphenator.config({

@@ -48,7 +48,9 @@ def get_config(context):
         # Limitation: minwordlength will use the value selected for the
         # main language of the page. If there are multiple languages
         # in the same page, they will not be taken into consideration.
-        lang['minwordlength'] = 4
+        # Dashes are coverted to underscore before lookup in site properties.
+        lang['minwordlength'] = props.getProperty('minwordlength_%s' %
+            (lang['name'].replace('-', '_'), ), 4)
     return config
 
 
