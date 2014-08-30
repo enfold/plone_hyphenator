@@ -1,5 +1,4 @@
 
-import json
 import re
 from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
@@ -7,7 +6,6 @@ from zExceptions import Unauthorized
 from OFS.Image import File
 
 from .config import get_config
-from os.path import splitext
 
 def save_wordlist(context, request):
     config = get_config(context)
@@ -31,7 +29,7 @@ def save_wordlist(context, request):
             try:
                 folder = portal.unrestrictedTraverse(folder_path)
             except KeyError:
-                raise RuntimeError, 'Cannot save wordlist, because folder does not exists [%s]' % (folder_path, )
+                raise RuntimeError('Cannot save wordlist, because folder does not exists [%s]' % (folder_path, ))
         else:
             folder = portal
             name = split_path[0]
@@ -39,7 +37,7 @@ def save_wordlist(context, request):
             # (This mime type will make the content editable through ZMI. Can be changed later as desired.)
             file_content = folder[name] = File(name, '', '[]', 'text/x-unknown-content-type', '')
         except Unauthorized:
-            raise RuntimeError, 'Cannot save wordlist, no permission to create object in folder [%s]' % (path, )
+            raise RuntimeError('Cannot save wordlist, no permission to create object in folder [%s]' % (folder_path, ))
     # No need to clean the list, as the client has done it already.
     file_content.data = content_json
 
