@@ -54,17 +54,9 @@
         // this case helps with admin pages or any page which have no language set.
         // (Alternately, we could handle this case as 'no language, no hyphenation',
         // but the current implementation which provides the fallback, is the simplest.)
+        langAttr = 'en';
         html.attr('lang', 'en');
       }
-      // Dry run, just to detect languages.
-      // Normally, one would call the corresponding function, but Hyphenator
-      // hides these in a closure. So we run the whole shebang but with a
-      // zero selection list to make it snappy.
-      Hyphenator.config({
-        selectorfunction: function () {
-          return [];
-        }
-      });
       // After the hyphenator has detected the current language,
       // it sets it as 'lang' attribute on the html. We will
       // need to use this to fetch our exception list for that language.
@@ -127,6 +119,11 @@
           defaultlanguage: options.lang,
           selectorfunction: function () {
             return $(options.hyphenatorSelector).get();
+          },
+          onerrorhandler: function (err) {
+            // We never ever want a popup. We just want to throw
+            // the error which is strangely, not the defult.
+            throw err;
           }
         });
         // add exception wordlist

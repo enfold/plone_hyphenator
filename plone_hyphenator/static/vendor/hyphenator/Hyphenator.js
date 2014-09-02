@@ -1345,7 +1345,7 @@ var Hyphenator = (function (window) {
                                 docLanguages[lang] = true;
                             } else if (!isBookmarklet) {
                                 hyphenate = false;
-                                onError(new Error('Language "' + lang + '" is not yet  supported.'));
+                                onError(new Error('Language "' + lang + '" is not yet supported.'));
                             }
                         }
                         if (hyphenate) {
