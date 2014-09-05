@@ -1303,6 +1303,18 @@ var Hyphenator = (function (window) {
             if (!mainLanguage) {
                 mainLanguage = getLangFromUser();
             }
+            // XXX BEGIN PATCH 2 Balazs Ree <ree@greenfinity.hu>
+            // In one particular case (google plus button) we had lang="null" set.
+            // Guard agains this here as well.
+            if (mainLanguage == 'null') {
+                // "Fix" this by setting null as the result, enabling defaults to kick in.
+                mainLanguage = defaultLanguage;
+                var c = window.console;
+                if (c && c.log) {
+                    c.log('plone_hyphenator: Ignored lang="null" set on an element, using "' + defaultLanguage + '" instead.');
+                }
+            }
+            // XXX END PATCH 2
             el.lang = mainLanguage;
         },
 
