@@ -22,7 +22,7 @@ def save_wordlist(context, request):
     portal = portal_url.getPortalObject()
     try:
         file_content = portal.unrestrictedTraverse(wordlist_path)
-    except KeyError:
+    except (KeyError, AttributeError):
         split_path = wordlist_path.rsplit('/', 1)
         if len(split_path) > 1:
             folder_path, name = split_path
