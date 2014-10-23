@@ -1332,9 +1332,11 @@ var Hyphenator = (function (window) {
             var elToProcess, tmp, i = 0,
                 process = function (el, lang) {
                     var n, i = 0, hyphenate = true;
-
                     if (el.lang && typeof (el.lang) === 'string') {
                         lang = el.lang.toLowerCase(); //copy attribute-lang to internal lang
+                        if (lang == 'null') { 
+                            lang = 'en';
+                        }
                     } else if (lang) {
                         lang = lang.toLowerCase();
                     } else {

@@ -114,6 +114,8 @@
           hyphenchar: String.fromCharCode(173),
           // ZERO WIDTH SPACE
           urlhyphenchar: '\u200b',
+          // https://code.google.com/p/hyphenator/wiki/en_PublicAPI#property_intermediatestate
+          intermediatestate : 'visible',
           minwordlength : options.minwordlength,
           // Specify a fallback language in any case
           defaultlanguage: options.lang,
