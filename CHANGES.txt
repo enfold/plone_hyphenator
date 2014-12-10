@@ -4,6 +4,9 @@ Changelog
 0.0.1 (unreleased)
 ------------------
 
+- Update to Hyphenator 4.3.0
+  [frapell]
+
 - Remove duplicate data property in object literal, since is not allowed in
   strict mode
   [frapell]

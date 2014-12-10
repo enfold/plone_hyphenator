@@ -9,3 +9,6 @@ caused the `Language "null" is not yet supported` popup.
 In the site when this occured, it was caused by the Google + button. While
 obviously an error, ignoring it from here makes perfect sense as it does not
 take away any functionality.
+
+
+NOTE: This is in Hyphenator-4.2.0.js now, and left there in case we need to apply it to newer version as well
