@@ -117,7 +117,6 @@
           // https://code.google.com/p/hyphenator/wiki/en_PublicAPI#property_intermediatestate
           intermediatestate : 'visible',
           minwordlength : options.minwordlength,
-          intermediatestate : 'visible',
           // Specify a fallback language in any case
           defaultlanguage: options.lang,
           selectorfunction: function () {

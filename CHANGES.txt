@@ -1,0 +1,9 @@
+Changelog
+=========
+
+0.0.1 (unreleased)
+------------------
+
+- Remove duplicate data property in object literal, since is not allowed in
+  strict mode
+  [frapell]
