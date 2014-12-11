@@ -1373,15 +1373,32 @@ var Hyphenator = (function (window) {
          * @return {string} The language of the element
          * @access private
          */
+
+        // XXX BEGIN PATCH Balazs Ree <ree@greenfinity.hu>
+        // In one particular case (google plus button) we had lang="null" set.
+        // This is a mistake that we want to ignore from here.
+        _getAttribute = function (el, name) {
+            var attr = el.getAttribute(name);
+            if (attr == 'null') {
+                // "Fix" this by setting null as the result, enabling defaults to kick in.
+                attr = null;
+                var c = window.console;
+                if (c && c.log) {
+                    c.log('plone_hyphenator: Ignored lang="null" set on an element.');
+                }
+            }
+            return attr;
+        },
         getLang = function (el, fallback) {
             try {
-                return !!el.getAttribute('lang') ? el.getAttribute('lang').toLowerCase() :
-                        !!el.getAttribute('xml:lang') ? el.getAttribute('xml:lang').toLowerCase() :
+                return !!_getAttribute(el, 'lang')? _getAttribute(el, 'lang').toLowerCase() :
+                        !!_getAttribute(el, 'xml:lang') ? _getAttribute(el, 'xml:lang').toLowerCase() :
                                 el.tagName.toLowerCase() !== 'html' ? getLang(el.parentNode, fallback) :
                                         fallback ? mainLanguage :
                                                 null;
-            } catch (ignore) {}
+            } catch (e) {}
         },
+        // XXX END PATCH Balazs Ree <ree@greenfinity.hu>
 
         /**
          * @method Hyphenator~autoSetMainLanguage
@@ -1466,6 +1483,18 @@ var Hyphenator = (function (window) {
             if (!mainLanguage) {
                 mainLanguage = getLangFromUser();
             }
+            // XXX BEGIN PATCH 2 Balazs Ree <ree@greenfinity.hu>
+            // In one particular case (google plus button) we had lang="null" set.
+            // Guard agains this here as well.
+            if (mainLanguage == 'null') {
+                // "Fix" this by setting null as the result, enabling defaults to kick in.
+                mainLanguage = defaultLanguage;
+                var c = window.console;
+                if (c && c.log) {
+                    c.log('plone_hyphenator: Ignored lang="null" set on an element, using "' + defaultLanguage + '" instead.');
+                }
+            }
+            // XXX END PATCH 2
             el.lang = mainLanguage;
         },
 
