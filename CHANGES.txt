@@ -4,8 +4,12 @@ Changelog
 0.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Patch Hyphenator.js so it only uses console.log if it's actually available
+  [frapell]
 
+- Patch Hyphenator.js since sometimes an element will have its language set as
+  'null' and it will not even call the patched getLang
+  [frapell]
 
 0.2 (2014-12-19)
 ----------------
@@ -16,3 +20,6 @@ Changelog
 - Remove duplicate data property in object literal, since is not allowed in
   strict mode
   [frapell]
+
+- Patch Hyphenator.js to ignore 'null' language in certain scenarios
+  [reebalazs]

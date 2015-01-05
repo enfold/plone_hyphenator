@@ -335,7 +335,13 @@ var Hyphenator = (function (window) {
          * @access private
          */
         onWarning = function (e) {
-            window.console.log(e.message);
+            // XXX BEGIN PATCH Franco Pellegrini <franco.pellegrini@enfoldsystems.com>
+            // Only use console.log if it's actually available
+            var c = window.console;
+            if (c && c.log) {
+                c.log(e.message);
+            }
+            // XXX END PATCH Franco Pellegrini <franco.pellegrini@enfoldsystems.com>
         },
 
         /**
@@ -1554,7 +1560,9 @@ var Hyphenator = (function (window) {
                             }
                         };
 
-                    if (el.lang && typeof (el.lang) === 'string') {
+                    // XXX: PATCH Franco Pellegrini <franco.pellegrini@enfoldsystems.com>
+                    // check that el.lang is not "null"
+                    if (el.lang && typeof (el.lang) === 'string' && el.lang !== "null") {
                         eLang = el.lang.toLowerCase(); //copy attribute-lang to internal eLang
                     } else if (!!pLang && pLang !== '') {
                         eLang = pLang.toLowerCase();
