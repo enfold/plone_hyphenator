@@ -49,9 +49,12 @@ def get_config(context):
         # main language of the page. If there are multiple languages
         # in the same page, they will not be taken into consideration.
         # Dashes are coverted to underscore before lookup in site properties.
-        lang['minwordlength'] = props.getProperty('minwordlength_%s' %
-            (lang['name'].replace('-', '_'), ), 4)
-    return config
+        if props is not None:
+            lang['minwordlength'] = props.getProperty('minwordlength_%s' %
+                (lang['name'].replace('-', '_'), ), 4)
+        else:
+            lang['minwordlength'] = 4
+        return config
 
 
 def service_switches():
