@@ -7,17 +7,23 @@
       hyphenated at the specified hyphenation points.
       Each word should be on a separate line.
     </p>
-    <label for="lang">Select language:</label>
-    <select name="lang">
-      <option
-         tal:repeat="language view/config/languages"
-         tal:attributes="value language/name"
-         tal:content="language/title">
-      </option>
-    </select>
     <form>
-      <textarea
-        placeholder="Enter corrections, one word example per line..."></textarea>
+        <div>
+            <label for="lang">Select language:</label>
+            <select name="lang" id="lang">
+                <option
+                tal:repeat="language view/config/languages"
+                tal:attributes="value language/name"
+                tal:content="language/title">
+                </option>
+            </select>
+        </div>
+        <div>
+            <label for="hyphenation-corrections">Corrections:</label>
+            <textarea
+                id="hyphenation-corrections"
+                placeholder="Enter corrections, one word example per line..."></textarea>
+        </div>
         <input type="submit" class="submit" value="Save">
     </form>
   </div>

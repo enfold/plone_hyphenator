@@ -4,7 +4,8 @@ Changelog
 0.4 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- #311058: Restructure HTML and add missing <label> element
+  [frapell]
 
 
 0.3 (2015-01-05)
